@@ -1,50 +1,71 @@
 # Read Repair Mechanism  
-## Quorum-Based Distributed Database Consistency
+### Quorum-Based Distributed Database Consistency
+
+> An enterprise-style implementation of **read repair** in distributed databases, inspired by **Apache Cassandra** and **Amazon DynamoDB**, ensuring **eventual consistency**, **high availability**, and **low latency**.
+
+---
+
+## 📌 Overview
+
+Modern distributed databases replicate data across multiple nodes to achieve fault tolerance and availability. However, failures, network partitions, and concurrent writes can lead to **replica divergence**.
+
+This project implements a **Read Repair Mechanism** that:
+- Detects inconsistent replicas during **read operations**
+- Returns the **most recent correct value** using quorum
+- Repairs stale replicas **asynchronously in the background**
+- Ensures **no performance penalty** to clients
+
+---
+
+## 🧠 Key Concepts Used
+
+- Quorum-based consistency
+- Eventual consistency
+- Replica versioning
+- Conflict resolution
+- Asynchronous background repair
+- Fault tolerance & self-healing systems
 
 ---
 
 ## 1. Introduction
 
-This project implements a **Read Repair Mechanism** for distributed database systems, inspired by Apache Cassandra and Amazon DynamoDB. In modern distributed systems, data is replicated across multiple nodes to ensure high availability and fault tolerance. However, network failures, partial outages, or concurrent updates can cause replicas to diverge, leading to data inconsistency.
+This project implements a **Read Repair Mechanism** for distributed database systems. Data is replicated across multiple nodes to ensure high availability and fault tolerance, but real-world failures can cause replicas to become inconsistent.
 
-The Read Repair Mechanism addresses this challenge by detecting inconsistencies during read operations and automatically repairing stale replicas in the background, ensuring eventual consistency without manual intervention or system downtime. The system uses a **quorum-based approach** where the majority version is considered authoritative, guaranteeing that clients always receive the most recent data.
+The Read Repair Mechanism detects these inconsistencies during read operations and automatically repairs outdated replicas without requiring system downtime or manual intervention. A **quorum-based approach** ensures the majority version is always treated as authoritative, guaranteeing clients receive the most recent data.
 
 ---
 
 ## 2. Problem Statement
 
-Distributed database systems face several critical challenges in maintaining data consistency:
+Distributed systems face several consistency challenges:
 
-- **Network Delays**: Latency in communication between replicas can cause temporary inconsistencies.
-- **Partial Failures**: When some replicas fail to receive updates, the system becomes inconsistent.
-- **Concurrent Updates**: Multiple clients updating the same data simultaneously can create version conflicts.
-- **Network Partitions**: Temporary isolation of replicas prevents synchronization.
+- **Network Delays** – Replicas may lag behind updates
+- **Partial Failures** – Some nodes miss write operations
+- **Concurrent Updates** – Conflicting versions across replicas
+- **Network Partitions** – Temporary isolation prevents sync
 
-Without an automated repair mechanism, these issues require manual intervention, lead to data inconsistencies, and can cause clients to receive outdated information. This project solves these problems by implementing an intelligent, self-healing system that maintains consistency while preserving high availability and low latency.
+Without automated repair, systems risk returning **stale or incorrect data**. Manual fixes reduce reliability and scalability. This project solves these issues using an **intelligent, self-healing read repair strategy**.
 
 ---
 
-## 3. Solution
+## 3. Solution Architecture
 
-The Read Repair Mechanism implements a **multi-layered solution** combining quorum-based consistency, version-based conflict resolution, and asynchronous repair strategies.
+### 🔹 High-Level Architecture
 
-### System Architecture
-*Figure 1: System Architecture*
+```mermaid
+flowchart LR
+    Client --> Coordinator
+    Coordinator --> Replica1
+    Coordinator --> Replica2
+    Coordinator --> Replica3
 
-### Quorum-Based Reads
-For **N replicas**, the system requires agreement from:
+    Replica1 --> Coordinator
+    Replica2 --> Coordinator
+    Replica3 --> Coordinator
 
-
-The coordinator fetches data from multiple replicas, compares versions, and selects the majority version.
-
-*Figure 2: Quorum Decision Process*
-
-### Version-Based Conflict Resolution
-Each document contains a **version number** and **timestamp**. When inconsistencies are detected, the system selects the highest version number agreed upon by the quorum.
-
-### Asynchronous Background Repair
-After returning the correct data to the client, stale replicas are updated in the background using **Node.js workers**, **shell scripts**, and **Unix background jobs**, ensuring **zero impact on read latency**.
-
+    Coordinator -->|Latest Version| Client
+    Coordinator -->|Async Repair| BackgroundWorkers
 ---
 
 ## 4. Objectives of the Project
@@ -76,9 +97,4 @@ Each document includes:
 
 ---
 
-**Source:** Converted directly from your uploaded DOCX :contentReference[oaicite:0]{index=0}
 
-If you want, I can also:
-- optimize this README for GitHub (badges, diagrams, TOC),
-- convert figures into ASCII / Mermaid diagrams,
-- or split it into `/docs` + `README.md` structure.
