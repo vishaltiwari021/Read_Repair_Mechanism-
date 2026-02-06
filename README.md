@@ -51,23 +51,13 @@ Without automated repair, systems risk returning **stale or incorrect data**. Ma
 
 ## 3. Solution Architecture
 
-### 🔹 High-Level Architecture
+The Read Repair Mechanism implements a **multi-layered solution** combining quorum-based consistency, version-based conflict resolution, and asynchronous repair strategies.
 
-```mermaid
-flowchart LR
-    Client --> Coordinator
-    Coordinator --> Replica1
-    Coordinator --> Replica2
-    Coordinator --> Replica3
+### System Architecture
+*Figure 1: System Architecture*
 
-    Replica1 --> Coordinator
-    Replica2 --> Coordinator
-    Replica3 --> Coordinator
-
-    Coordinator -->|Latest Version| Client
-    Coordinator -->|Async Repair| BackgroundWorkers
----
-
+### Quorum-Based Reads
+For **N replicas**, the system requires agreement from:
 ## 4. Objectives of the Project
 
 - **Ensure Data Consistency**: Guarantee clients always receive the most recent version of data through quorum-based reads.
@@ -96,5 +86,6 @@ Each document includes:
 { "_id", "data", "version", "updatedAt" }
 
 ---
+
 
 
