@@ -13,7 +13,7 @@ This project implements a **Read Repair Mechanism** that:
 - Detects inconsistent replicas during **read operations**
 - Returns the **most recent correct value** using quorum
 - Repairs stale replicas **asynchronously in the background**
-- Ensures **no performance penalty** to clients
+- Ensures **no performance penalty** 
 
 ---
 
