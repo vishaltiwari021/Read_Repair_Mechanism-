@@ -1,12 +1,2 @@
-{
-  "version": "1.0.0",
-  "quorumSize": "majority",
-  "repairStrategy": "background",
-  "fullRepairSchedule": "0 2 * * *",
-  "maxConcurrentRepairs": 10,
-  "repairTimeoutMs": 5000,
-  "retryPolicy": {
-    "maxRetries": 3,
-    "backoffMs": 1000
-  }
-}
+
+export const REPAIR_TIMEOUT_MS = Number(process.env.REPAIR_TIMEOUT_MS) || 5000;
