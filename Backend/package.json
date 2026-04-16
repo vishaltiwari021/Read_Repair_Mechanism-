@@ -6,15 +6,19 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "ejs": "^4.0.1",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^5.2.1",
-    "mongoose": "^9.2.0",
+    "mongoose": "^9.2.0"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.11"
   }
 }

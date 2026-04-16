@@ -1,10 +1,8 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import documentRouter from "./routes/document.route.js";
 import db from "./database/connection.js";
-
-dotenv.config();
 const app = express();
 
 app.use(cors());

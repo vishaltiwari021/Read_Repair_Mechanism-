@@ -2,6 +2,10 @@ import db from "../database/connection.js";
 
 class Quorum {
   constructor(totalReplicas) {
+    if (!Number.isInteger(totalReplicas) || totalReplicas < 1) {
+      throw new Error("totalReplicas must be a positive integer");
+    }
+
     this.totalReplicas = totalReplicas;
     this.quorumSize = Math.floor(totalReplicas / 2) + 1;
   }

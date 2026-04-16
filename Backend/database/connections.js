@@ -1,8 +1,14 @@
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/read_repair";
-const DB_NAME = process.env.DB_NAME || "read_repair";
 const REPLICA_COLLECTIONS = ["replica_1", "replica_2", "replica_3"];
+
+function getMongoUri() {
+  return process.env.MONGO_URI || "mongodb://127.0.0.1:27017/read_repair";
+}
+
+function getDbName() {
+  return process.env.DB_NAME || "read_repair";
+}
 
 function normalizeDocument(doc) {
   if (!doc) return null;
@@ -35,8 +41,8 @@ class DatabaseConnection {
 
   async openConnection() {
     try {
-      await mongoose.connect(MONGO_URI, {
-        dbName: DB_NAME,
+      await mongoose.connect(getMongoUri(), {
+        dbName: getDbName(),
         maxPoolSize: 10,
         serverSelectionTimeoutMS: 5000,
         connectTimeoutMS: 5000,
